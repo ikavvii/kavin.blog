@@ -1,0 +1,321 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --term-bg: #070a08;
+  --term-panel: #0b0f0d;
+  --term-panel2: #0e1411;
+  --term-border: #223029;
+  --term-fg: #cddcc8;
+  --term-dim: #7a8a76;
+  --term-green: #35d16c;
+  --term-amber: #ffb15c;
+  --term-cyan: #5fd4ff;
+  --term-red: #ff6262;
+  --term-accent: #35d16c;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--term-bg);
+  color: var(--term-fg);
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(53, 209, 108, 0.06), transparent),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 3px,
+      rgba(255, 255, 255, 0.012) 3px,
+      rgba(255, 255, 255, 0.012) 4px
+    );
+  background-attachment: fixed;
+}
+
+::selection {
+  background: var(--term-accent);
+  color: var(--term-bg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--term-accent);
+  outline-offset: 2px;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--term-border) transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--term-border);
+  border-radius: 0;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@layer components {
+  .term-window {
+    @apply relative bg-term-panel border border-term-border shadow-glow;
+  }
+  .term-titlebar {
+    @apply flex items-center gap-2 border-b border-term-border bg-term-panel2 px-3 py-2 select-none;
+  }
+  .term-dot {
+    @apply inline-block h-3 w-3 rounded-full;
+  }
+  .prompt {
+    @apply text-term-green;
+  }
+  .prompt-dim {
+    @apply text-term-dim;
+  }
+  .cursor {
+    @apply inline-block h-[1em] w-[0.55em] translate-y-[0.15em] animate-blink;
+    background: var(--term-accent);
+  }
+  .term-link {
+    @apply text-term-amber underline decoration-dotted underline-offset-4 transition-colors;
+  }
+  .term-link:hover {
+    @apply text-term-fg;
+  }
+  .term-input {
+    @apply w-full border border-term-border bg-term-bg px-3 py-2 text-term-fg placeholder:text-term-dim focus:border-term-green focus:outline-none;
+  }
+  .term-select {
+    @apply border border-term-border bg-term-bg px-3 py-2 text-term-fg;
+  }
+  .term-btn {
+    @apply inline-flex items-center gap-2 border border-term-border bg-term-panel2 px-3 py-2 text-sm text-term-fg transition-colors hover:border-term-green hover:text-term-green disabled:cursor-not-allowed disabled:opacity-40;
+  }
+  .term-btn-primary {
+    @apply border-term-green text-term-green bg-term-bg hover:bg-term-green hover:text-term-bg;
+  }
+  .term-btn-danger {
+    @apply border border-term-red text-term-red;
+  }
+  .term-btn-danger:hover {
+    @apply border-term-red bg-term-red text-term-bg;
+  }
+  .term-badge {
+    @apply inline-flex items-center border px-1.5 py-0.5 text-xs leading-none;
+  }
+  .term-badge-green {
+    @apply border-term-green text-term-green;
+  }
+  .term-badge-amber {
+    @apply border-term-amber text-term-amber;
+  }
+  .term-badge-dim {
+    @apply border-term-border text-term-dim;
+  }
+  .term-card {
+    @apply block border border-term-border bg-term-panel px-4 py-3 transition-colors;
+  }
+  .term-card:hover {
+    @apply border-term-green shadow-glow;
+  }
+  .term-divider {
+    @apply border-t border-dashed border-term-border;
+  }
+}
+
+/* Markdown body rendering ------------------------------------------------ */
+
+.md-body > * + * {
+  margin-top: 1.1rem;
+}
+.md-body h1,
+.md-body h2,
+.md-body h3,
+.md-body h4,
+.md-body h5,
+.md-body h6 {
+  color: var(--term-fg);
+  font-weight: 700;
+  line-height: 1.25;
+  scroll-margin-top: 5rem;
+}
+.md-body h1 {
+  font-size: 1.5rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px dashed var(--term-border);
+}
+.md-body h2 {
+  font-size: 1.25rem;
+  color: var(--term-accent);
+}
+.md-body h3 {
+  font-size: 1.1rem;
+  color: var(--term-amber);
+}
+.md-body h4,
+.md-body h5,
+.md-body h6 {
+  font-size: 1rem;
+}
+.md-body p {
+  line-height: 1.75;
+}
+.md-body a {
+  color: var(--term-amber);
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+  transition: color 0.15s;
+}
+.md-body a:hover {
+  color: var(--term-fg);
+}
+.md-body strong {
+  color: var(--term-green);
+  font-weight: 700;
+}
+.md-body em {
+  font-style: italic;
+}
+.md-body ul {
+  list-style: none;
+  padding-left: 1.25rem;
+}
+.md-body ul > li {
+  position: relative;
+  line-height: 1.75;
+}
+.md-body ul > li::before {
+  content: "> ";
+  color: var(--term-accent);
+  position: absolute;
+  left: -1.1rem;
+}
+.md-body ol {
+  list-style: decimal;
+  padding-left: 1.5rem;
+  line-height: 1.75;
+}
+.md-body blockquote {
+  border-left: 3px solid var(--term-accent);
+  padding-left: 1rem;
+  color: var(--term-dim);
+  font-style: italic;
+}
+.md-body code {
+  background: var(--term-panel2);
+  border: 1px solid var(--term-border);
+  padding: 0.15rem 0.4rem;
+  font-size: 0.875em;
+  color: var(--term-amber);
+}
+.md-body pre {
+  background: var(--term-panel2);
+  border: 1px solid var(--term-border);
+  padding: 1rem;
+  overflow-x: auto;
+  line-height: 1.6;
+}
+.md-body pre code {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: var(--term-fg);
+  font-size: 0.875rem;
+}
+.md-body img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--term-border);
+}
+.md-body table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.md-body th,
+.md-body td {
+  border: 1px solid var(--term-border);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+.md-body th {
+  background: var(--term-panel2);
+  color: var(--term-amber);
+}
+.md-body hr {
+  border: 0;
+  border-top: 1px dashed var(--term-border);
+}
+.md-body kbd {
+  border: 1px solid var(--term-border);
+  border-bottom-width: 2px;
+  background: var(--term-panel2);
+  padding: 0.1rem 0.35rem;
+  font-size: 0.8em;
+}
+
+/* Header / trailing text ------------------------------------------------ */
+
+.text-muted {
+  color: var(--term-dim);
+}
+
+/* highlight.js token palette -------------------------------------------- */
+
+.hljs-comment,
+.hljs-quote {
+  color: var(--term-dim);
+  font-style: italic;
+}
+.hljs-keyword,
+.hljs-selector-tag {
+  color: var(--term-amber);
+}
+.hljs-string,
+.hljs-regexp,
+.hljs-attr {
+  color: var(--term-green);
+}
+.hljs-number,
+.hljs-literal,
+.hljs-symbol,
+.hljs-bullet {
+  color: var(--term-cyan);
+}
+.hljs-title,
+.hljs-function {
+  color: var(--term-cyan);
+}
+.hljs-title.function_,
+.hljs-title.class_ {
+  color: var(--term-fg);
+}
+.hljs-built_in,
+.hljs-type,
+.hljs-class .hljs-title {
+  color: var(--term-amber);
+}
+.hljs-name,
+.hljs-tag,
+.hljs-selector-class,
+.hljs-selector-id {
+  color: var(--term-amber);
+}
+.hljs-variable,
+.hljs-template-variable {
+  color: var(--term-red);
+}
+.hljs-meta,
+.hljs-doctag,
+.hljs-params {
+  color: var(--term-dim);
+}
